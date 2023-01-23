@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+{% block title %}My Account{% endblock %}
+{% block content %}
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>My Account</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Dashboard Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6 class="coupon__link">Welcome to your dashboard {{ user.get_username }}!
+                    </h6>
+                </div>
+                
+            </div>
+            <div class="checkout__form">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <h5>Order History</h5>
+                        <div class="row">
+                            <div class="table-responsive -md">
+                                <!-- Order history Begin -->
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                          <th scope="col">Ref_ID</th>
+                                          <th scope="col">Item</th>
+                                          <th scope="col">Name</th>
+                                          <th scope="col">Qty</th>
+                                          <th scope="col">Total Price</th>
+                                          <th scope="col">Payment Status</th>
+                                          <th scope="col">Order Status</th>
+                                          <th scope="col">Date Ordered</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% if orders  %}
+                                        {% for item in orders %}
+                                        <tr>
+                                          <td>
+                                            {{item.order_reference_id}}
+                                          </td>
+                                          <td>
+                                            <div class="cart__product__item__title">
+                                                <a href="{% url 'product_detail' item.item_ordered.id item.item_ordered.name|slugify %}">
+                                                    <img src="{{ item.item_ordered.photo_1.url }}" style="object-fit: cover;" width="30" height="30" alt="">
+                                                </a>
+                                            </div>
+                                          </td>
+                                          <td>{{item.item_ordered.name}}</td>
+                                          <td>{{item.quantity}}</td>
+                                          <td>{{item.item_total_price}}</td>
+                                          <td>
+                                            {% if "pending" in item.payment_status %}
+                                                <p style="color: red; font-weight: 600;">
+                                                    {{item.payment_status}}
+                                                </p>
+                                            {% elif "Partly" in item.payment_status %}
+                                                <p style="color: rgb(140, 152, 7); font-weight: 600;">
+                                                    {{item.payment_status}}
+                                                </p>
+                                            {% elif "Fully" in item.payment_status %}
+                                                <p style="color: rgb(21, 238, 93); font-weight: 600;">
+                                                    {{item.payment_status}}
+                                                </p>
+                                            {% else %}
+                                            {{item.payment_status}}
+                                            {% endif %}
+                                          </td>
+                                          <td>
+                                            {% if "pending" in item.order_status %}
+                                                <p style="color: red; font-weight: 600;">
+                                                    {{item.order_status}}
+                                                </p>
+                                            {% elif "Received" in item.order_status %}
+                                                <p style="color: rgb(165, 161, 42); font-weight: 600;">
+                                                    {{item.order_status}}
+                                                </p>
+                                            {% elif "Dispatched" in item.order_status %}
+                                                <p style="color: rgb(16, 172, 210); font-weight: 600;">
+                                                    {{item.order_status}}
+                                                </p>
+                                            {% elif "Delivered" in item.order_status %}
+                                                <p style="color: rgb(21, 238, 93); font-weight: 600;">
+                                                    {{item.order_status}}
+                                                </p>
+                                            {% else %}
+                                            {{item.order_status}}
+                                            {% endif %}
+                                          </td>
+                                          <td>{{item.date_ordered|date:"M d, Y"}}</td>
+                                        </tr>
+                                        {% endfor  %}
+                                        {% endif %}
+                                      </tbody>
+                                </table>
+                                <!-- Order history End -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <!-- Bank details Begin -->
+                        <div class="checkout__order">
+                            <h5>Ellys Fashion bank details</h5>
+                            <div class="checkout__order__product">
+                                <ul>
+                                    <li>Account Number <span id="account-number">{{acc_number}}</span></li>
+                                    <li>Account Name <span>{{acc_name}}</span></li>
+                                    <li>Bank Name <span>{{bank}}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Bank details End -->
+                        
+                        <br/>
+                        <div></div>
+                        <br/>
+                        <!-- Wishlist Begin -->
+                        <div class="checkout__order">
+                            <h5>Wishlist</h5>
+                            <div class="shop__cart__table">
+                                <table id="cartTable">
+                                    <tbody>
+                                        {% if wishlists  %}
+                                        {% for item in wishlists %}
+                                        <tr>
+                                            <td class="cart__product__item" >
+                                                <div class="cart__product__item__title" c_id="sfd">
+                                                    <!-- Product image thumbnail -->
+                                                    <a href="{% url 'product_detail' item.product.id item.product.name|slugify %}">
+                                                        <img src="{{ item.product.photo_1.url }}" style="object-fit: cover;" width="50" height="50" alt="">
+                                                    </a>
+                                                    <!-- Product name -->
+                                                    <a href="{% url 'product_detail' item.product.id item.product.name|slugify %}">
+                                                        <h6>{{ item.product.name }}<span class="wishpro_id" hidden>{{item.product.id}} </span></h6>
+                                                    </a>
+                                                    <!-- Product price -->
+                                                    <a href="{% url 'product_detail' item.product.id item.product.name|slugify %}">
+                                                    {% if item.product.promo_price %}
+                                                        <h6 style="color: brown;"> ₦ {{item.product.promo_price |intcomma}}</h6>
+                                                    {% else %}
+                                                        <h6 style="color: brown;"> ₦ {{item.product.price |intcomma}}</h6>
+                                                    {% endif %}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <!-- Remove button -->
+                                            <td class="cart__price" >
+                                                <span class="wishlist_remove" style="cursor: pointer;" data-url="{% url 'wishlist' %}">
+                                                    Remove
+                                                </span>
+                                            </td>
+                                            
+                                        </tr>
+                                        {% endfor  %}
+                                        {% else  %}
+                                            <h6 class="text-center">You have no wishlist yet </h6>
+                                        {% endif  %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Wishlist End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Dashboard End -->
+
+    {% endblock content %}

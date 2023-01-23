@@ -1,0 +1,91 @@
+{% load humanize %}
+
+{% load static %}
+<div class="col-lg-9 col-md-9" id="product-list-template">
+    <div class="row">
+        
+        <!-- Products -->
+        {% if products %}
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6">
+            <div {% if product.promo_price %}
+                class="product__item sale"
+                {%  else %}
+                class="product__item"
+                {%  endif %}
+                >
+                <div class="product__item__pic set-bgajax " style="background-image: url('{{ product.photo_1.url }}');">
+                    {% if "Out of stock" in product.availability  %}
+                    <div class="label stockout stockblue">Out Of Stock</div>
+                    {%  else %}
+                        {% if product.promo_price %}
+                        <div class="label">Sale</div>
+                        {%  else %}
+                            {%  if "weeks" not in product.post_date|timesince %}
+                            <div class="label new">New</div>
+                            {%  endif %}
+                        {%  endif %}
+                    {%  endif %}
+                    <ul class="product__hover">
+                        <li><a href="{{ product.photo_1.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                        <li><a class="wishlist" data-url="{% url 'wishlist' %}" p_id="{{product.id}}" href="#"><span class="icon_heart_alt"></span></a></li>
+                        <li><a class="add-to-cart a_cart" p_id="{{product.id}}" qty="1" p_name="{{product.name}}" p_price="{{product.price}}" p_imgurl="{{product.photo_1.url}}" data-url="{% url 'cart' %}" href="#"><span class="icon_bag_alt"></span></a></li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6><a href="{% url 'product_detail' product.id product.name|slugify %}" target="_blank"><strong>{{product.name}}</strong></a></h6>
+                    <div class="rating">
+                        <a href="{% url 'product_detail' product.id product.name|slugify %}" target="_blank">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </a>
+                    </div>
+                    <div class="product__price">
+                        <a href="{% url 'product_detail' product.id product.name|slugify %}" target="_blank" style="color: rgb(199, 5, 5);">
+                            {% if product.promo_price %}
+                                ₦ {{product.promo_price |intcomma}}  <span>₦ {{product.price |intcomma}}</span>
+                            {% else %}
+                                ₦ {{product.price |intcomma}}
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+ 
+        <!-- Pagination -->
+        <div class="col-lg-12 text-center">
+            <div class="pagination__option">
+                {% if products.has_other_pages %} 
+
+                <!-- Previous page -->
+                {% if products.has_previous %}
+                <a id="pageprev" href="?page={{products.previous_page_number}}"><i class="fa fa-angle-left"></i> </a>
+                {% else %}
+                {% endif %}
+
+                <!-- other pages -->
+                {% for i in products.paginator.page_range %}
+                {% if products.number == i %}
+                <a style="background: #0d0d0d; border-color: #0d0d0d; color: #ffffff;" href="#">{{i}}</a>
+                {% else %}
+                <a class="cuspagenum" data-id="{{i}}" href="?page={{i}}">{{i}}</a>
+                {% endif %}
+                {% endfor %}
+
+                <!-- Next page -->
+                {% if products.has_next %}
+                <a  id="pagenext" href="?page={{products.next_page_number}}"><i class="fa fa-angle-right"></i></a>
+                {% else %}
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}About us{% endblock %}
+{% block content %}
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>About us</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row coupon__link">    
+            </div>
+            <div class="checkout__form">
+                <div class="row">
+                    <!-- About text begin -->
+                    <div class="col-lg-7">
+                        <h5>About Us</h5>
+                        <div class="blog__details__desc" style="text-align: justify; text-justify: inter-word;">
+                            <p>At Elly's Galleria we are a youthful, unique group, excellent, eager and as differing as our items. </p>
+
+                            <p>We adore fashion and are continually searching for the coolest designs from around the globe. Quality at great costs is our best need. </p>
+
+                            <p>For more than ten years we have been rousing our clients and our consideration has been the mystery of our prosperity. </p>
+
+                            <p>Notwithstanding our magnificence specialists and pattern scouts, Elly's Galleria utilizes inventive visual craftsmen, fastidious IT experts, charming record administrators, and steady logisticians. </p>
+
+                            <p>Fulfilled and upbeat clients are our inspiration to do the best each day. </p>
+
+                            <p>We trust you appreciate shopping and on the off chance that you have an inquiry, proposals, solicitations, or analysis, do not hesitate to get in touch with us via the <a href="{% url 'contact' %}" style="color: red;">Contact page</a>. </p>
+                        </div>
+                    </div>
+                    <!-- About text end -->
+                    
+                    <!-- Image div -->
+                    <div class="col-lg-5 checkout__order set-bg" style="background-size: contain;" data-setbg="{% static 'img/categories/homepage.jpeg' %}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+
+{% endblock content %}

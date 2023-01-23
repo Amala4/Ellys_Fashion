@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+{% block title %}Shopping Cart{% endblock %}
+{% block content %}
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>Shopping cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+    <br/>
+   
+
+    <!-- Shop Cart Section Begin -->
+    <section  class="shop-cart spad">
+        {% if request.session.cart_items %}
+        
+        <div class="container">
+            <!-- Cart items Begin -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shop__cart__table">
+                        <table id="cartTable">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in request.session.cart_items %}
+                                <tr>
+                                    <td class="cart__product__item">
+                                        <a href="{% url 'product_detail' item.product_id item.product_name|slugify %}" target="_blank"><img src="{{item.imageUrl}}" style="object-fit: cover;" width="90" height="90" alt=""></a>
+                                        <div class="cart__product__item__title" c_id="{{item.product_id}}">
+                                            <a href="{% url 'product_detail' item.product_id item.product_name|slugify %}" target="_blank"><h6>{{item.product_name}} <span class="cartpro_id" hidden>{{item.product_id}} </span></h6></a>
+                                            <div class="rating">
+                                                <a href="{% url 'product_detail' item.product_id item.product_name|slugify %}" target="_blank">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">₦ <span class="cart__pricespan">{{item.product_price |intcomma}}</span></td>
+                                    <td class="cart__quantity">
+                                        <div class="pro-qty">
+                                            <input class="pro-qty-input" type="text" value="{{item.quantity}}">
+                                        </div>
+                                        <span class="cart__qty" hidden>{{item.quantity}}</span>
+                                    </td>
+                                    <td class="cart__total">₦ <span class="cart__totalspan">{{item.product_price_tot |intcomma}}</span></td>
+                                    <td class="cart__close"><span class="icon_close" data-url="{% url 'cart' %}"></span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart items End -->
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="{% url 'products' %}">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn update__btn cart__total__procced">
+                        <form action="#" class="checkout__form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h5>Delivery detail</h5>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="checkout__form__input">
+                                                <p> Phone Number <span>*</span></p>
+                                                <input type="number" id="ordPhnNo" placeholder="Enter your Phone number">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>Delivery Address <span>*</span></p>
+                                                <input type="text" id="ordDelAddr" placeholder="Enter your Address">
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>  
+                            </div>
+                        </form>
+                       
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="discount__content">
+                    </div>
+                </div>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span id="cart__subtotalprice">₦ 700</span></li>
+                            <li>Delivery fee <span id="cart__delivery_fee">₦ {{2000 |intcomma}}</span></li>
+                            <li>Total <span class="cart__totalprice" id="cart__totalprice">₦ 700</span></li>
+                        </ul>
+                        <a href="#" id="ordProceed" class="primary-btn" login-url= "{% url 'login' %}" login-status="{{request.user.is_authenticated}}" data-url="{% url 'cart' %}">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <h6 class="text-center">You have not added any item to your cart yet </h6>
+        {% endif %}
+    </section>
+    <!-- Shop Cart Section End -->
+
+{% endblock content %}

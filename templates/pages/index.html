@@ -1,0 +1,496 @@
+{% extends 'base.html' %} 
+{% load humanize %}
+{% load static %} 
+{% block title %}Home page{% endblock %}
+{% block content %}
+
+<div>
+<!-- Alerts -->
+{% include '_alerts.html' %}
+
+<!-- Categories Section Begin -->
+<section class="categories">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-lg-6 p-0">
+        <div
+          class="categories__item categories__large__item set-bg"
+          data-setbg="{% static 'img/categories/homepage.jpeg' %}">
+          <div class="categories__text">
+            <h1 id="wf">Women’s fashion</h1>
+            <p>
+              Womens wears, natives <br />
+              fashion items, all accessories, bags, shoes, <br />
+              childrens wears.
+            </p>
+            <a href="{% url 'products' %}">Shop now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+            <div
+              class="categories__item set-bg"
+              data-setbg="{% static 'img/categories/category-3.jpg' %}">
+              <div class="categories__text">
+                <h4>Gowns</h4>
+                <p>{{gown_count}} items</p>
+                <a href="{% url 'products' %}">Shop now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+            <div class="categories__item set-bg"
+              data-setbg="{% static '/img/categories/category-5.jpg' %}">
+              <div class="categories__text">
+                <h4>Two Piece</h4>
+                <p>{{two_piece_count}} items</p>
+                <a href="{% url 'products' %}">Shop now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+            <div
+              class="categories__item set-bg"
+              data-setbg="{% static '/img/categories/category-2.jpg' %}">
+              <div class="categories__text">
+                <h4>Unisex</h4>
+                <p>{{unisex_count}} items</p>
+                <a href="{% url 'products' %}">Shop now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+            <div
+              class="categories__item set-bg"
+              data-setbg="{% static 'img/categories/category-4.jpg' %}">
+              <div class="categories__text">
+                <h4>Cosmetics</h4>
+                <p>{{cosmetics_count}} items</p>
+                <a href="{% url 'products' %}">Shop now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Categories Section End -->
+
+
+<!-- Product Section Begin -->
+<section class="product spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-4">
+        <div class="section-title">
+          <h4>New product</h4>
+        </div>
+      </div>
+      <div class="col-lg-8 col-md-8">
+        <ul class="filter__controls">
+          <li class="active" data-filter="*">All</li>
+          <li data-filter=".cosmetic">Cosmetics</li>
+          <li data-filter=".gowns">Gowns</li>
+          <li data-filter=".twopiece">Two Piece</li>
+          <li data-filter=".unisex">Unisex</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row property__gallery">
+
+      <!-- New gown-->
+      <div class="col-lg-3 col-md-4 col-sm-6 mix gowns">
+        {% if new_gown %}
+        {% for gown in new_gown %}
+        <div class="product__item">
+          <div class="product__item__pic set-bg" data-setbg="{{ gown.photo_1.url }}">
+            <ul class="product__hover">
+              <li>
+                <a href="{{ gown.photo_1.url }}" class="image-popup">
+                  <span class="arrow_expand"></span>
+                </a>
+              </li>
+              <li>
+                <a class="wishlist" p_id="{{gown.id}}" data-url="{% url 'wishlist' %}" href="#">
+                  <span class="icon_heart_alt"></span>
+                </a>
+              </li>
+              <li>
+                <a class="a_cart" p_id="{{gown.id}}" qty="1" p_name="{{gown.name}}" p_price="{{gown.price}}" p_imgurl="{{gown.photo_1.url}}" data-url="{% url 'cart' %}" href="#">
+                  <span class="icon_bag_alt"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="product__item__text">
+            <h6><a href="{% url 'product_detail' gown.id gown.name|slugify %}"><strong>{{gown.name}}</strong></a></h6>
+            <div class="rating">
+              <a href="{% url 'product_detail' gown.id gown.name|slugify %}">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </a>
+            </div>
+            <div class="product__price">
+              <a href="{% url 'product_detail' gown.id gown.name|slugify %}" style="color: rgb(199, 5, 5);">
+              ₦ {{gown.price |intcomma}}
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <!-- New cosmetics -->
+      <div class="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
+        {% if new_cosmetics %}
+        {% for cosmetic in new_cosmetics %}
+        <div class="product__item">
+          <div class="product__item__pic set-bg" data-setbg="{{ cosmetic.photo_1.url }}">
+            <ul class="product__hover">
+              <li>
+                <a href="{{ cosmetic.photo_1.url }}" class="image-popup">
+                  <span class="arrow_expand"></span>
+                </a>
+              </li>
+              <li>
+                <a class="wishlist" p_id="{{cosmetic.id}}" data-url="{% url 'wishlist' %}" href="#">
+                  <span class="icon_heart_alt"></span>
+                </a>
+              </li>
+              <li>
+                <a class="a_cart" p_id="{{cosmetic.id}}" qty="1" p_name="{{cosmetic.name}}" p_price="{{cosmetic.price}}" p_imgurl="{{cosmetic.photo_1.url}}" data-url="{% url 'cart' %}" href="#">
+                  <span class="icon_bag_alt"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="product__item__text">
+            <h6><a href="{% url 'product_detail' cosmetic.id cosmetic.name|slugify %}"><strong>{{cosmetic.name}}</strong></a></h6>
+            <div class="rating">
+              <a href="{% url 'product_detail' cosmetic.id cosmetic.name|slugify %}">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </a>
+            </div>
+            <div class="product__price">
+              <a href="{% url 'product_detail' cosmetic.id cosmetic.name|slugify %}" style="color: rgb(199, 5, 5);">
+                ₦ {{cosmetic.price |intcomma}}
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <!-- New Two piece -->
+      <div class="col-lg-3 col-md-4 col-sm-6 mix twopiece">
+        {% if new_two_piece %}
+        {% for two_piece in new_two_piece %}
+        <div class="product__item">
+          <div class="product__item__pic set-bg" data-setbg="{{ two_piece.photo_1.url }}">
+            <ul class="product__hover">
+              <li>
+                <a href="{{ two_piece.photo_1.url }}" class="image-popup">
+                  <span class="arrow_expand"></span>
+                </a>
+              </li>
+              <li>
+                <a class="wishlist" p_id="{{two_piece.id}}" data-url="{% url 'wishlist' %}" href="#">
+                  <span class="icon_heart_alt"></span>
+                </a>
+              </li>
+              <li>
+                <a class="a_cart" p_id="{{two_piece.id}}" qty="1" p_name="{{two_piece.name}}" p_price="{{two_piece.price}}" p_imgurl="{{two_piece.photo_1.url}}" data-url="{% url 'cart' %}" href="#">
+                  <span class="icon_bag_alt"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="product__item__text">
+            <h6><a href="{% url 'product_detail' two_piece.id two_piece.name|slugify %}"><strong>{{two_piece.name}}</strong></a></h6>
+            <div class="rating">
+              <a href="{% url 'product_detail' two_piece.id two_piece.name|slugify %}">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </a>
+            </div>
+            <div class="product__price">
+              <a href="{% url 'product_detail' two_piece.id two_piece.name|slugify %}" style="color: rgb(199, 5, 5);">
+                ₦ {{two_piece.price |intcomma}}
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <!-- New Unisex -->
+      <div class="col-lg-3 col-md-4 col-sm-6 mix unisex">
+        {% if new_unisex %}
+        {% for unisex in new_unisex %}
+        <div class="product__item">
+          <div class="product__item__pic set-bg" data-setbg="{{ unisex.photo_1.url }}">
+            <ul class="product__hover">
+              <li>
+                <a href="{{ unisex.photo_1.url }}" class="image-popup">
+                  <span class="arrow_expand"></span>
+                </a>
+              </li>
+              <li>
+                <a class="wishlist" p_id="{{unisex.id}}" data-url="{% url 'wishlist' %}" href="#">
+                  <span class="icon_heart_alt"></span>
+                </a>
+              </li>
+              <li>
+                <a class="a_cart" p_id="{{unisex.id}}" qty="1" p_name="{{unisex.name}}" p_price="{{unisex.price}}" p_imgurl="{{unisex.photo_1.url}}" data-url="{% url 'cart' %}" href="#">
+                  <span class="icon_bag_alt"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="product__item__text">
+            <h6><a href="{% url 'product_detail' unisex.id unisex.name|slugify %}"><strong>{{unisex.name}}</strong></a></h6>
+            <a  href="{% url 'product_detail' unisex.id unisex.name|slugify %}">
+              <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+            </a>
+            <a href="{% url 'product_detail' unisex.id unisex.name|slugify %}">
+              <div class="product__price" style="color: rgb(199, 5, 5);">₦ {{unisex.price |intcomma}}</div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Product Section End -->
+
+
+<!-- Banner Section Begin -->
+<section
+  class="banner set-bg"
+  data-setbg="{% static '/img/banner/banner-1.jpg' %}">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-7 col-lg-8 m-auto">
+        <div class="banner__slider owl-carousel">
+          <div class="banner__item">
+            <div class="banner__text">
+              <span>The Ellys Collection</span>
+              <h1>Bridal shower</h1>
+              <a href="{% url 'products' %}">Shop now</a>
+            </div>
+          </div>
+          <div class="banner__item">
+            <div class="banner__text">
+              <span>The Ellys Collection</span>
+              <h1>Comfy Casual</h1>
+              <a href="{% url 'products' %}">Shop now</a>
+            </div>
+          </div>
+          <div class="banner__item">
+            <div class="banner__text">
+              <span>The Ellys Collection</span>
+              <h1>Skin care</h1>
+              <a href="{% url 'products' %}">Shop now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Banner Section End -->
+
+
+<!-- Trend Section Begin -->
+<section class="trend spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="trend__content">
+          <div class="section-title">
+            <h4>Hot Trend</h4>
+          </div>
+          {% if hot_trend %}
+          {% for trend in hot_trend %}
+          <a href="{% url 'product_detail' trend.id trend.name|slugify %}">
+            <div class="trend__item">
+              <div class="trend__item__pic">
+                <img src="{{ trend.photo_1.url }}" style="object-fit: cover;" width="90" height="90" alt="{{trend.name}}" />
+              </div>
+              <div class="trend__item__text">
+                <h6><strong>{{trend.name}}</strong></h6>
+                <div class="product__price" style="color: rgb(199, 5, 5);">₦ {{trend.price |intcomma}}</div>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="trend__content">
+          <div class="section-title">
+            <h4>Best seller</h4>
+          </div>
+          {% if best_seller %}
+          {% for item in best_seller %}
+          <a href="{% url 'product_detail' item.id item.name|slugify %}">
+            <div class="trend__item">
+              <div class="trend__item__pic">
+                <img src="{{ item.photo_1.url }}" style="object-fit: cover;" width="90" height="90" alt="{{item.name}}" />
+              </div>
+              <div class="trend__item__text">
+                <h6><strong>{{item.name}}</strong></h6>
+                <div class="product__price" style="color: rgb(199, 5, 5);">₦ {{item.price |intcomma}}</div>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="trend__content">
+          <div class="section-title">
+            <h4>Feature</h4>
+          </div>
+          {% if feature %}
+          {% for item in feature %}
+          <a href="{% url 'product_detail' item.id item.name|slugify %}">
+            <div class="trend__item">
+              <div class="trend__item__pic">
+                <img src="{{ item.photo_1.url }}" style="object-fit: cover;" width="90" height="90" alt="{{item.name}}" />
+              </div>
+              <div class="trend__item__text">
+                <h6><strong>{{item.name}}</strong></h6>
+                
+                <div class="product__price" style="color: rgb(199, 5, 5);">₦ {{item.price |intcomma}}</div>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Trend Section End -->
+
+
+<!-- Discount Section Begin -->
+<section class="discount">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 p-0">
+        <div class="discount__pic">
+          <img src="{% static '/img/discount.jpg' %}" alt="discount" />
+        </div>
+      </div>
+      <div class="col-lg-6 p-0">
+        <div class="discount__text">
+          <div class="discount__text__title">
+            <span>Discount</span>
+            <h2>2023 Season</h2>
+            <h5><span>Sale</span> 20%</h5>
+          </div>
+          <div class="discount__countdown" id="countdown-time">
+            <div class="countdown__item">
+              <span>22</span>
+              <p>Days</p>
+            </div>
+            <div class="countdown__item">
+              <span>18</span>
+              <p>Hour</p>
+            </div>
+            <div class="countdown__item">
+              <span>46</span>
+              <p>Min</p>
+            </div>
+            <div class="countdown__item">
+              <span>05</span>
+              <p>Sec</p>
+            </div>
+          </div>
+          <a href="{% url 'products' %}">Shop now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Discount Section End -->
+
+
+<!-- Services Section Begin -->
+<section class="services spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="services__item">
+          <i class="fa fa-car"></i>
+          <h6>Nationwide Shipping</h6>
+          <p>For all oders</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="services__item">
+          <i class="fa fa-money"></i>
+          <h6>Money Back Guarantee</h6>
+          <p>T&C apply</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="services__item">
+          <i class="fa fa-support"></i>
+          <h6>Online Support 24/7</h6>
+          <p>Dedicated support</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="services__item">
+          <i class="fa fa-headphones"></i>
+          <h6>Payment Secure</h6>
+          <p>100% secure payment</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Services Section End -->
+
+</div>
+{% endblock content %}

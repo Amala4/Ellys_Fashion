@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>Login</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Login Section Begin -->
+    <section class="contact spad">
+        <div class="container">
+            <div class="row">
+                <!-- Login form -->
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__content">
+                        <!-- Alerts -->
+                        {% include '_alerts.html' %}
+                        <div class="contact__form">
+                            <h5>LOGIN</h5>
+                            <form action="{% url 'login' %}"  method ="POST">
+                                {% csrf_token %}
+                                <input type="text" name="username" placeholder="Username" required>
+                                <input type="text" name="password" placeholder="Password" required>
+
+                                <button type="submit" class="site-btn">Submit</button>
+                            </form>
+
+                           <br/><br/> <p>Don't have an account? <a href="{% url 'signup' %}" style="color: black;"><strong> Register here </strong></a></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ad space -->
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__map">
+                        <!-- Advert can take up this space in the future -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Login Section End -->
+
+{% endblock content %}
